@@ -4,19 +4,23 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 import { withStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
+
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 
 const styles = theme => ({
-  root: {
-    flexGrow: 1
+  detailsContainer: {
+    position: "absolute",
+    left: 0,
+    top: 0,
+    bottom: 0,
+    right: 0
   },
-  iframecontainer: {},
+
   iframe: {
     border: "0px none",
-    minHeight: 500,
+    height: "100%",
     width: "100%"
   },
   paper: {
@@ -25,6 +29,7 @@ const styles = theme => ({
   },
   card: {
     minWidth: 275,
+    height: 200,
     textAlign: "left"
   },
   bullet: {
@@ -41,6 +46,14 @@ const styles = theme => ({
   },
   pos: {
     marginBottom: 12
+  },
+
+  iframeContainer: {
+    position: "absolute",
+    left: 0,
+    top: 201,
+    bottom: 0,
+    right: 0
   }
 });
 
@@ -53,52 +66,51 @@ const getFormattedDate = date =>
   });
 
 let ThemeDetails = ({ details, url, classes, selectedThemeID }) => (
-  <div className="contents">
+  <div className={classes.detailsContainer}>
     {selectedThemeID && (
-      <Grid className={classes.container} container spacing={24}>
-        <Grid className={classes.contents} item sm={12} lg={4}>
-          <Card className={classes.card}>
-            <CardContent>
-              <Typography className={classes.title} variant="h5" component="h2">
-                {details.title}
-              </Typography>
-              <Typography className={classes.description} gutterBottom>
-                {details.description}
-              </Typography>
+      <React.Fragment>
+        <Card className={classes.card}>
+          <CardContent>
+            <Typography className={classes.title} variant="h5" component="h2">
+              {details.title}
+            </Typography>
+            <Typography className={classes.description} gutterBottom>
+              {details.description}
+            </Typography>
 
-              <Typography component="p" gutterBottom>
-                Owned by{" "}
-                {details.owner === "_default" ? "Default" : details.owner}
-              </Typography>
+            <Typography component="p" gutterBottom>
+              Owned by{" "}
+              {details.owner === "_default" ? "Default" : details.owner}
+            </Typography>
 
-              <Typography component="p">
-                Created on {getFormattedDate(details.created)}
-              </Typography>
+            <Typography component="p">
+              Created on {getFormattedDate(details.created)}
+            </Typography>
 
-              <Typography component="p" gutterBottom>
-                Last updated on {getFormattedDate(details.last_updated)}
-              </Typography>
+            <Typography component="p" gutterBottom>
+              Last updated on {getFormattedDate(details.last_updated)}
+            </Typography>
 
-              <Typography
-                className={classes.pos}
-                color="textSecondary"
-                gutterBottom
-              >
-                ID: {details.guid}
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid className={classes.iframecontainer} item sm={12} lg={8}>
+            <Typography
+              className={classes.pos}
+              color="textSecondary"
+              gutterBottom
+            >
+              ID: {details.guid}
+            </Typography>
+          </CardContent>
+        </Card>
+
+        <div className={classes.iframeContainer}>
           {url && (
             <iframe
-              title="Pagedip Preview"
+              title="Preview Pagedip"
               className={classes.iframe}
               src={url}
             />
           )}
-        </Grid>
-      </Grid>
+        </div>
+      </React.Fragment>
     )}
   </div>
 );

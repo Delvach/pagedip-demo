@@ -13,6 +13,12 @@ import TableRow from "@material-ui/core/TableRow";
 
 import { selectThemeAction } from "../actions/themes";
 
+const getFilteredThemes = (themes, searchTerm) => {
+  return themes.filter(({ title }) => {
+    return title.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1;
+  });
+};
+
 const styles = {
   root: {
     width: "100%"
@@ -23,32 +29,40 @@ const styles = {
 };
 
 let ThemeList = ({ themes, selectTheme, classes, selectedThemeID }) => (
-  <Table>
-    <TableHead>
-      <TableRow hover>
-        <TableCell>Title</TableCell>
-        <TableCell>Owner</TableCell>
-      </TableRow>
-    </TableHead>
-    <TableBody>
-      {themes.map(theme => (
-        <TableRow
-          onClick={e => {
-            selectTheme(theme.guid);
-          }}
-          key={theme.guid}
-          className={classes.hover}
-          hover
-          selected={theme.guid === selectedThemeID}
-        >
-          <TableCell>{theme.title}</TableCell>
-          <TableCell>
-            {theme.owner === "_default" ? "Default" : theme.owner}
-          </TableCell>
-        </TableRow>
-      ))}
-    </TableBody>
-  </Table>
+  <React.Fragment>
+    {themes.length ? (
+      <Table>
+        <TableHead>
+          <TableRow hover>
+            <TableCell>Title</TableCell>
+            <TableCell>Owner</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {themes.map(theme => (
+            <TableRow
+              onClick={e => {
+                selectTheme(theme.guid);
+              }}
+              key={theme.guid}
+              className={classes.hover}
+              hover
+              selected={theme.guid === selectedThemeID}
+            >
+              <TableCell>{theme.title}</TableCell>
+              <TableCell>
+                {theme.owner === "_default" ? "Default" : theme.owner}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    ) : (
+      <div style={{ padding: 15 }}>
+        Oops! No themes match your search terms.
+      </div>
+    )}
+  </React.Fragment>
 );
 
 ThemeList.propTypes = {
@@ -64,7 +78,7 @@ ThemeList.defaultProps = {
 };
 
 const mapStateToProps = ({ themes, navigation }) => ({
-  themes,
+  themes: getFilteredThemes(themes, navigation.searchTerm),
   searchTerm: navigation.searchTerm,
   selectedThemeID: navigation.selectedTheme
 });

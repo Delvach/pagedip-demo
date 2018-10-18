@@ -1,16 +1,25 @@
-#root {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
 }
 
 .App {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   text-align: center;
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
+}
+
+.content_box.bottom {
+  flex: 2;
+  display: flex;
+  position: relative;
 }
 
 .App-logo {
