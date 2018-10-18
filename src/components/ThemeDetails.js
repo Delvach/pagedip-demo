@@ -9,6 +9,8 @@ import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 
+import { getFilteredThemes } from "../utils/themes";
+
 const styles = theme => ({
   detailsContainer: {
     position: "absolute",
@@ -65,73 +67,87 @@ const getFormattedDate = date =>
     day: "numeric"
   });
 
-let ThemeDetails = ({ details, url, classes, selectedThemeID }) => (
+let ThemeDetails = ({
+  details,
+  url,
+  classes,
+  selectedThemeID,
+  filteredThemes
+}) => (
   <div className={classes.detailsContainer}>
-    {selectedThemeID && (
-      <React.Fragment>
-        <Card className={classes.card}>
-          <CardContent>
-            <Typography className={classes.title} variant="h5" component="h2">
-              {details.title}
-            </Typography>
-            <Typography className={classes.description} gutterBottom>
-              {details.description}
-            </Typography>
+    {selectedThemeID &&
+      filteredThemes.find(({ guid }) => guid === selectedThemeID) !==
+        undefined && (
+        <React.Fragment>
+          <Card className={classes.card}>
+            <CardContent>
+              <Typography className={classes.title} variant="h5" component="h2">
+                {details.title}
+              </Typography>
+              <Typography className={classes.description} gutterBottom>
+                {details.description}
+              </Typography>
 
-            <Typography component="p" gutterBottom>
-              Owned by{" "}
-              {details.owner === "_default" ? "Default" : details.owner}
-            </Typography>
+              <Typography component="p" gutterBottom>
+                Owned by{" "}
+                {details.owner === "_default" ? "Default" : details.owner}
+              </Typography>
 
-            <Typography component="p">
-              Created on {getFormattedDate(details.created)}
-            </Typography>
+              <Typography component="p">
+                Created on {getFormattedDate(details.created)}
+              </Typography>
 
-            <Typography component="p" gutterBottom>
-              Last updated on {getFormattedDate(details.last_updated)}
-            </Typography>
+              <Typography component="p" gutterBottom>
+                Last updated on {getFormattedDate(details.last_updated)}
+              </Typography>
 
-            <Typography
-              className={classes.pos}
-              color="textSecondary"
-              gutterBottom
-            >
-              ID: {details.guid}
-            </Typography>
-          </CardContent>
-        </Card>
+              <Typography
+                className={classes.pos}
+                color="textSecondary"
+                gutterBottom
+              >
+                ID: {details.guid}
+              </Typography>
+            </CardContent>
+          </Card>
 
-        <div className={classes.iframeContainer}>
-          {url && (
-            <iframe
-              title="Preview Pagedip"
-              className={classes.iframe}
-              src={url}
-            />
-          )}
-        </div>
-      </React.Fragment>
-    )}
+          <div className={classes.iframeContainer}>
+            {url && (
+              <iframe
+                title="Preview Pagedip"
+                className={classes.iframe}
+                src={url}
+              />
+            )}
+          </div>
+        </React.Fragment>
+      )}
   </div>
 );
 
 ThemeDetails.propTypes = {
+  filteredThemes: PropTypes.array,
   details: PropTypes.object,
   url: PropTypes.string,
   classes: PropTypes.object,
+  searchTerm: PropTypes.string,
   selectedThemeID: PropTypes.string
 };
 
 ThemeDetails.defaultProps = {
+  filteredThemes: [],
   details: {},
   url: "",
   classes: {},
+  searchTerm: "",
   selectedThemeID: ""
 };
 
-const mapStateToProps = ({ details, navigation }) => ({
+const mapStateToProps = ({ themes, details, navigation }) => ({
+  filteredThemes: getFilteredThemes(themes, navigation.searchTerm),
   url: details.url,
   details,
+  searchTerm: navigation.searchTerm,
   selectedThemeID: navigation.selectedTheme
 });
 

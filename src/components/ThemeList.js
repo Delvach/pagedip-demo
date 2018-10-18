@@ -13,11 +13,7 @@ import TableRow from "@material-ui/core/TableRow";
 
 import { selectThemeAction } from "../actions/themes";
 
-const getFilteredThemes = (themes, searchTerm) => {
-  return themes.filter(({ title }) => {
-    return title.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1;
-  });
-};
+import { getFilteredThemes } from "../utils/themes";
 
 const styles = {
   root: {
@@ -67,19 +63,16 @@ let ThemeList = ({ themes, selectTheme, classes, selectedThemeID }) => (
 
 ThemeList.propTypes = {
   themes: PropTypes.array,
-  searchTerm: PropTypes.string,
   selectedThemeID: PropTypes.string
 };
 
 ThemeList.defaultProps = {
   themes: [],
-  searchTerm: "",
   selectedThemeID: ""
 };
 
 const mapStateToProps = ({ themes, navigation }) => ({
   themes: getFilteredThemes(themes, navigation.searchTerm),
-  searchTerm: navigation.searchTerm,
   selectedThemeID: navigation.selectedTheme
 });
 
