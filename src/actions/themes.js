@@ -28,3 +28,8 @@ export const setThemeIDAction = id => ({
   type: "SET_SELECTED_THEME",
   payload: { id }
 });
+
+export const handleSearchChangeAction = term => ({
+  type: "SET_THEME_SEARCH_TERM",
+  payload: { term }
+});

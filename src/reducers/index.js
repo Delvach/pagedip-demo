@@ -8,7 +8,8 @@ const DEFAULT_THEMES_STATE = [];
 // Define default navigation state
 const DEFAULT_NAVIGATION_STATE = {
   themesLoading: true,
-  selectedTheme: null
+  selectedTheme: null,
+  searchTerm: ""
 };
 
 // Define default selected theme details state
@@ -53,6 +54,9 @@ function navigation(state = DEFAULT_NAVIGATION_STATE, { type, payload }) {
 
     case "SET_SELECTED_THEME":
       return Object.assign({}, state, { selectedTheme: payload.id });
+
+    case "SET_THEME_SEARCH_TERM":
+      return Object.assign({}, state, { searchTerm: payload.term });
 
     default:
       return state;
