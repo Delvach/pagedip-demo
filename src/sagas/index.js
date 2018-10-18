@@ -85,8 +85,6 @@ export function* loadThemesData() {
     yield put(setThemesDataAction(data.rows));
     yield put(setThemesLoadingStatusAction(false));
   }
-
-  // Remove loading indicator
 }
 
 export function* loadThemeDetailsData({ payload }) {
@@ -117,8 +115,6 @@ function* loadAllThemes() {
 function* loadThemeDetails() {
   yield takeEvery("SELECT_THEME", loadThemeDetailsData);
 }
-
-//LOAD_THEMES
 
 export const themeSagas = [loadAllThemes(), loadThemeDetails()];
 
